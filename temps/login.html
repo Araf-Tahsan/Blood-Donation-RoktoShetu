@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BloodBank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e53935;
+            --primary-dark: #c62828;
+            --secondary: #b71c1c;
+            --light: #ffebee;
+            --dark: #263238;
+            --gray: #eceff1;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray);
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .split-screen {
+            display: flex;
+            width: 100%;
+        }
+        
+        .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1000/800') center/cover no-repeat;
+            color: var(--white);
+            padding: 40px;
+        }
+        
+        .left-content {
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .left h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--white);
+            padding: 40px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background-color: var(--white);
+        }
+        
+        .login-container h2 {
+            color: var(--dark);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+        
+        .login-tagline {
+            color: #78909c;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .input-group i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #90a4ae;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fafafa;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+            background-color: var(--white);
+            box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.1);
+            outline: none;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #78909c;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        button {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
+        }
+        
+        button i {
+            margin-left: 8px;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #78909c;
+            font-size: 0.9rem;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .divider::before {
+            margin-right: 10px;
+        }
+        
+        .divider::after {
+            margin-left: 10px;
+        }
+        
+        .alt-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+            color: #757575;
+            transition: all 0.3s;
+        }
+        
+        .social-btn:hover {
+            background-color: #eeeeee;
+            transform: translateY(-2px);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #78909c;
+            font-size: 0.9rem;
+        }
+        
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .signup-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--white);
+        }
+        
+        .alert {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            border-left: 4px solid #ffc107;
+        }
+        /* Replace your existing media query section with these enhanced responsive rules */
+@media (max-width: 992px) {
+    .split-screen {
+        flex-direction: column;
+    }
+    
+    .left, .right {
+        flex: none;
+        width: 100%;
+    }
+    
+    .left {
+        min-height: 400px;
+    }
+    
+    .stats {
+        margin-top: 20px;
+    }
+    
+    .login-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .left {
+        padding: 30px 20px;
+    }
+    
+    .right {
+        padding: 30px 20px;
+    }
+    
+    .left h1 {
+        font-size: 2.2rem;
+    }
+    
+    .tagline {
+        font-size: 1.1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .left {
+        min-height: 350px;
+        padding: 25px 15px;
+    }
+    
+    .right {
+        padding: 25px 15px;
+    }
+    
+    .stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .stat-item {
+        margin-bottom: 15px;
+    }
+    
+    .left h1 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .tagline {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+    
+    .login-container {
+        padding: 20px;
+    }
+    
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group input {
+        padding: 12px 12px 12px 40px;
+    }
+    
+    .alt-login {
+        gap: 10px;
+    }
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .split-screen {
+        min-height: -webkit-fill-available;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="split-screen">
+        <div class="left">
+            <div class="left-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>BloodBank</span>
+                </div>
+                <h1>Donate Blood, Save Lives</h1>
+                <p class="tagline">Join our community of heroes who are making a difference one donation at a time. Your single donation can save up to three lives.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Donors</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15000+</div>
+                        <div class="stat-label">Lives Saved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Hospitals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right">
+            <div class="login-container">
+                <h2>Welcome Back</h2>
+                <p class="login-tagline">Sign in to continue to your BloodBank account</p>
+                
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                    
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    
+                    <button type="submit">
+                        Login
+                        <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                </form>
+                
+                <div class="signup-link">
+                    Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

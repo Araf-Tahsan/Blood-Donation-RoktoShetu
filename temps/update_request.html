@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Request - RoktoShetu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Keep all the CSS from your profile page */
+        :root {
+            --primary: #d32f2f;
+            --primary-dark: #b71c1c;
+            --primary-light: #ef5350;
+            --secondary: #f8f9fa;
+            --secondary-dark: #e9ecef;
+            --text-dark: #212529;
+            --text-medium: #495057;
+            --text-light: #ffffff;
+            --border: #dee2e6;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: #f2f5f9;
+            color: var(--text-dark);
+            padding-top: 70px;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--primary);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .request-form {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.75rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label i {
+            color: var(--primary);
+            width: 24px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
+            outline: none;
+        }
+
+        .blood-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .blood-type-option {
+            padding: 0.75rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .blood-type-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .urgency-indicator {
+            margin-top: 1.5rem;
+            background: var(--secondary);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+        }
+
+        .urgency-bar {
+            height: 8px;
+            background: linear-gradient(to right, #2ecc71, #f1c40f, var(--primary));
+            border-radius: 4px;
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .urgency-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.3s ease;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.85rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--text-light);
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.25);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-dark);
+        }
+
+        .error-message {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .img-preview {
+            max-width: 200px;
+            height: auto;
+            margin-top: 1rem;
+            border-radius: var(--radius-md);
+            display: none;
+            border: 2px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">RoktoShetu</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'profile' %}" class="active">Profile</a></li>
+            <li><a href="#">Donations</a></li>
+            <li><a href="#">Requests</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Form -->
+    <div class="form-container">
+        <div class="request-form">
+            <div class="form-header">
+                <h2><i class="fas fa-edit"></i> Update Emergency Request</h2>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" id="updateRequestForm">
+                {% csrf_token %}
+                
+                <!-- Blood Type -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tint"></i>
+                        Blood Type
+                    </label>
+                    <div class="blood-type-selector">
+                        {% for blood_type in form.blood_type %}
+                            <div class="blood-type-option" data-value="{{ blood_type.data.value }}">
+                                {{ blood_type.data.label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {{ form.blood_type }}
+                    <div class="error-message">{{ form.blood_type.errors }}</div>
+                </div>
+
+                <!-- Hospital Details -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-hospital"></i>
+                        Hospital Name
+                    </label>
+                    {{ form.hospital_name }}
+                    <div class="error-message">{{ form.hospital_name.errors }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Location
+                    </label>
+                    {{ form.location }}
+                    <div class="error-message">{{ form.location.errors }}</div>
+                </div>
+
+                <!-- Request Details -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-flask"></i>
+                        Units Needed
+                    </label>
+                    {{ form.quantity }}
+                    <div class="error-message">{{ form.quantity.errors }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        Needed By
+                    </label>
+                    {{ form.needed_by }}
+                    <div class="urgency-indicator">
+                        <div class="urgency-bar">
+                            <div class="urgency-marker" id="urgencyMarker"></div>
+                        </div>
+                    </div>
+                    <div class="error-message">{{ form.needed_by.errors }}</div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-phone-alt"></i>
+                        Contact Number
+                    </label>
+                    {{ form.contact }}
+                    <div class="error-message">{{ form.contact.errors }}</div>
+                </div>
+
+                <!-- Medical Information -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-file-medical"></i>
+                        Medical Reason
+                    </label>
+                    {{ form.reason }}
+                    <div class="error-message">{{ form.reason.errors }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-comment-medical"></i>
+                        Additional Details
+                    </label>
+                    {{ form.description }}
+                    <div class="error-message">{{ form.description.errors }}</div>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-file-upload"></i>
+                        Update Document
+                    </label>
+                    {{ form.image }}
+                    <img id="imagePreview" class="img-preview" src="{% if form.instance.image %}{{ form.instance.image.url }}{% endif %}" alt="Current document">
+                    <div class="error-message">{{ form.image.errors }}</div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{% url 'request_detail' blood_request.id %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Blood Type Selection
+            const bloodTypeOptions = document.querySelectorAll('.blood-type-option');
+            const bloodTypeSelect = document.querySelector('select[name="blood_type"]');
+            
+            function updateBloodTypeSelection() {
+                bloodTypeOptions.forEach(option => {
+                    option.classList.remove('selected');
+                    if(option.dataset.value === bloodTypeSelect.value) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+
+            bloodTypeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    bloodTypeSelect.value = option.dataset.value;
+                    updateBloodTypeSelection();
+                });
+            });
+
+            // Initialize selection
+            updateBloodTypeSelection();
+
+            // Image Preview
+            const imageInput = document.querySelector('input[type="file"]');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Urgency Indicator
+            const neededByInput = document.querySelector('input[type="date"]');
+            const urgencyMarker = document.getElementById('urgencyMarker');
+            
+            function updateUrgency() {
+                const today = new Date();
+                const neededDate = new Date(neededByInput.value);
+                const diffTime = neededDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                let position = 100;
+                if (diffDays > 7) position = 20;
+                else if (diffDays > 3) position = 40;
+                else if (diffDays > 1) position = 60;
+                else if (diffDays >= 0) position = 80;
+                else position = 100;
+                
+                urgencyMarker.style.left = `${position}%`;
+            }
+            
+            neededByInput.addEventListener('change', updateUrgency);
+            if(neededByInput.value) updateUrgency();
+
+            // Form Validation
+            const form = document.getElementById('updateRequestForm');
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = 'var(--primary)';
+                        const errorDiv = field.parentElement.querySelector('.error-message');
+                        if(errorDiv) errorDiv.textContent = 'This field is required';
+                    }
+                });
+
+                if (!isValid) e.preventDefault();
+            });
+
+            // Clear validation errors on input
+            form.querySelectorAll('input, textarea, select').forEach(input => {
+                input.addEventListener('input', () => {
+                    input.style.borderColor = 'var(--border)';
+                    const errorDiv = input.parentElement.querySelector('.error-message');
+                    if(errorDiv) errorDiv.textContent = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

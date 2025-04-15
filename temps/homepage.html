@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e53935; /* Red */
+            --background: #000000; /* Black */
+            --text-dark: #121212; /* Dark Gray */
+            --text-light: #ffffff; /* White */
+            --border: #e53935; /* Red Borders */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--text-light);
+            color: var(--text-dark);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--background);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: var(--border);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--text-light);
+            color: var(--text-dark);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+        }
+
+        .hero a {
+            background: var(--border);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .hero a:hover {
+            background: #b71c1c;
+        }
+
+        /* Feature Cards */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--background);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, border 0.3s ease;
+            border: 2px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--text-light);
+        }
+
+        .feature-card h3 {
+            color: var(--border);
+            margin: 1.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            opacity: 0.8;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            min-height: 60vh;
+            background-color: var(--text-light);
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--background);
+            color: var(--text-light);
+            padding: 2rem;
+            text-align: center;
+            border-top: 2px solid var(--border);
+        }
+
+        footer a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--border);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" style="background-color: #263238;">
+        <div class="logo">RoktoShetu</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="{% url 'emergency_request_list' %}">Emergency</a></li>
+            <li><a href="#availability">Availability</a></li>
+            <li><a href="{% url 'join_as_donor' %}">Donor</a></li>
+            <li><a href="{% url 'donor_list' %}">Donor List</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero" style="background-color:white;">
+        <h1>Save Lives Through Blood Donation</h1>
+        <p>Every drop counts. Join our community of life-savers today.</p>
+        <a href="#emergency">View Emergency Requests</a>
+    </section>
+
+    <!-- Feature Cards -->
+    <div class="features" style="background-color: white;">
+        <a href="#emergency" class="feature-card" style="background-color:black ;">
+            <i class="fas fa-bell" style="font-size: 2.5rem; color: var(--border);"></i>
+            <h3>Emergency Request</h3>
+            <p>Immediate blood requirement alerts</p>
+        </a>
+
+        <a href="#availability" class="feature-card">
+            <i class="fas fa-tint" style="font-size: 2.5rem; color: var(--border);"></i>
+            <h3>Blood Availability</h3>
+            <p>Check real-time blood stock status</p>
+        </a>
+
+        <a href="#camps" class="feature-card">
+            <i class="fas fa-calendar-check" style="font-size: 2.5rem; color: var(--border);"></i>
+            <h3>Donation Camps</h3>
+            <p>Find nearby blood donation events</p>
+        </a>
+
+        <a href="#profile" class="feature-card">
+            <i class="fas fa-user" style="font-size: 2.5rem; color: var(--border);"></i>
+            <h3>Donor Profile</h3>
+            <p>Manage your donor information</p>
+        </a>
+    </div>
+
+    <!-- Content Sections -->
+    <section id="emergency" class="section">
+        <h2>Emergency Blood Request</h2>
+        <p>Details about emergency blood requests will go here.</p>
+    </section>
+
+    <section id="availability" class="section">
+        <h2>Blood Availability</h2>
+        <p>Details about available blood stocks will go here.</p>
+    </section>
+
+    <section id="camps" class="section">
+        <h2>Donation Camps</h2>
+        <p>Information about upcoming donation camps will go here.</p>
+    </section>
+
+    <section id="profile" class="section">
+        <h2>Donor Profile</h2>
+        <p>Manage your donor information and track your donation history.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <a href="#home">About Us</a>
+            <a href="#home">Contact</a>
+            <a href="#home">Privacy Policy</a>
+        </div>
+        <p>© 2024 Blood Donation Hub. All rights reserved.</p>
+    </footer>
+</body>
+</html>
