@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <title>Roktoshetu - Blood Availability</title>
+    <style>
+        :root {
+            --primary: #e53935;
+            --primary-dark: #c62828;
+            --secondary: #f5f5f5;
+            --text-dark: #030303;
+            --text-light: #ffffff;
+            --border: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: white;
+            color: red;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        h1, h2 {
+            margin: 20px 0;
+            color: var(--primary-dark);
+        }
+        
+        h1 {
+            font-size: 28px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        input, select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .blood-group {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 5px;
+        }
+        
+        .pagination a {
+            padding: 8px 12px;
+            background-color: white;
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        
+        .pagination a.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .pagination a:hover:not(.active) {
+            background-color: #f1f1f1;
+        }
+        
+        .pagination a.disabled {
+            color: #aaa;
+            pointer-events: none;
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: var(--text-light);
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .search-filters {
+                flex-direction: column;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <div class="logo" style="font-size: 1.5rem; font-weight: bold; color: #d32f2f;">
+                <i class="fas fa-tint" style="color: #e63946;"></i> Roktoshetu
+            </div>
+            
+            <nav>
+                <ul style="list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; align-items: center;">
+                    <li>
+                        <a href="{% url 'homepage' %}" 
+                           style="text-decoration: none; color: #333; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease;"
+                           onmouseover="this.style.backgroundColor='rgba(230,57,70,0.1)'; this.style.color='#e63946';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                            <i class="fas fa-home" style="margin-right: 0.5rem;"></i> Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'emergency_request_list' %}" 
+                           style="text-decoration: none; color: #333; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease;"
+                           onmouseover="this.style.backgroundColor='rgba(230,57,70,0.1)'; this.style.color='#e63946';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                            <i class="fas fa-clipboard-list" style="margin-right: 0.5rem;"></i> Emergency
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'blood_list' %}" 
+                           style="text-decoration: none; color: #333; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease;"
+                           onmouseover="this.style.backgroundColor='rgba(230,57,70,0.1)'; this.style.color='#e63946';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                            <i class="fas fa-heart" style="margin-right: 0.5rem;"></i> Blood Availability
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'donor_list' %}" 
+                           style="text-decoration: none; color: #333; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease;"
+                           onmouseover="this.style.backgroundColor='rgba(230,57,70,0.1)'; this.style.color='#e63946';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#333';">
+                            <i class="fas fa-hand-holding-medical" style="margin-right: 0.5rem;"></i> Donors
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'profile' %}" 
+                           style="text-decoration: none; color: #333; padding: 0.5rem 1rem; border-radius: 5px; transition: all 0.3s ease; background-color: rgba(230,57,70,0.1);">
+                            <i class="fas fa-user" style="margin-right: 0.5rem;"></i> Profile
+                        </a>
+                    </li>
+                    <li style="margin-left: 2rem;">
+                        <a href="{% url 'login' %}" 
+                           style="text-decoration: none; color: white; background-color: #e63946; padding: 0.5rem 1.5rem; border-radius: 25px; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;"
+                           onmouseover="this.style.backgroundColor='#c62828'; this.style.boxShadow='0 2px 8px rgba(230,57,70,0.3)';"
+                           onmouseout="this.style.backgroundColor='#e63946'; this.style.boxShadow='none';">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1>Blood Availability</h1>
+        
+        <div class="card">
+            <div class="search-filters">
+                <select id="facilityFilter">
+                    <option value="">All Facilities</option>
+                    {% for facility in facilities %}
+                    <option value="{{ facility }}">{{ facility }}</option>
+                    {% endfor %}
+                </select>
+                
+                <select id="bloodGroupFilter">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+                
+                <select id="componentFilter">
+                    <option value="">All Components</option>
+                    {% for component in components %}
+                    <option value="{{ component }}">{{ component }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button id="searchBtn">Search</button>
+                <button id="resetBtn">Reset</button>
+            </div>
+            
+            <table id="bloodStockTable">
+                <thead>
+                    <tr>
+                        <th>Facility</th>
+                        <th>Blood Group</th>
+                        <th>Bag Number</th>
+                        <th>Component</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    {% for stock in blood_data %}
+                    <tr class="blood-data-row">
+                        <td>{{ stock.facility_name }}</td>
+                        <td class="blood-group">{{ stock.blood_group }}</td>
+                        <td>{{ stock.bag_number }}</td>
+                        <td>{{ stock.component }}</td>
+                        <td>{{ stock.last_updated }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated by the script -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2025 Roktoshetu - Connecting Blood Donors with Recipients
+    </footer>
+
+    <script>
+        // DOM elements
+        const tableBody = document.getElementById('tableBody');
+        const facilityFilter = document.getElementById('facilityFilter');
+        const bloodGroupFilter = document.getElementById('bloodGroupFilter');
+        const componentFilter = document.getElementById('componentFilter');
+        const searchBtn = document.getElementById('searchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const paginationDiv = document.getElementById('pagination');
+        
+        // Pagination settings
+        const rowsPerPage = 10;
+        let currentPage = 1;
+        
+        // Get all rows
+        const rows = document.querySelectorAll('.blood-data-row');
+        
+        // Function to show rows for current page
+        function displayRows() {
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            
+            let visibleRows = Array.from(document.querySelectorAll('.blood-data-row:not(.filtered-out)'));
+            
+            // Hide all rows first
+            visibleRows.forEach(row => {
+                row.style.display = 'none';
+            });
+            
+            // Show only rows for current page
+            for (let i = startIndex; i < Math.min(endIndex, visibleRows.length); i++) {
+                visibleRows[i].style.display = '';
+            }
+            
+            // Update pagination
+            updatePagination(visibleRows.length);
+        }
+        
+        // Function to update pagination controls
+        function updatePagination(totalRows) {
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            paginationDiv.innerHTML = '';
+            
+            // Previous button
+            const prevLink = document.createElement('a');
+            prevLink.href = '#';
+            prevLink.innerHTML = '&laquo; Previous';
+            if (currentPage === 1) {
+                prevLink.classList.add('disabled');
+            } else {
+                prevLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        displayRows();
+                    }
+                });
+            }
+            paginationDiv.appendChild(prevLink);
+            
+            // Page numbers
+            const maxPageButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+            
+            if (endPage - startPage + 1 < maxPageButtons) {
+                startPage = Math.max(1, endPage - maxPageButtons + 1);
+            }
+            
+            // First page
+            if (startPage > 1) {
+                const firstLink = document.createElement('a');
+                firstLink.href = '#';
+                firstLink.textContent = '1';
+                firstLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = 1;
+                    displayRows();
+                });
+                paginationDiv.appendChild(firstLink);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.margin = '0 5px';
+                    paginationDiv.appendChild(ellipsis);
+                }
+            }
+            
+            // Page numbers
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    displayRows();
+                });
+                paginationDiv.appendChild(pageLink);
+            }
+            
+            // Last page
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.margin = '0 5px';
+                    paginationDiv.appendChild(ellipsis);
+                }
+                
+                const lastLink = document.createElement('a');
+                lastLink.href = '#';
+                lastLink.textContent = totalPages;
+                lastLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = totalPages;
+                    displayRows();
+                });
+                paginationDiv.appendChild(lastLink);
+            }
+            
+            // Next button
+            const nextLink = document.createElement('a');
+            nextLink.href = '#';
+            nextLink.innerHTML = 'Next &raquo;';
+            if (currentPage === totalPages || totalPages === 0) {
+                nextLink.classList.add('disabled');
+            } else {
+                nextLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        displayRows();
+                    }
+                });
+            }
+            paginationDiv.appendChild(nextLink);
+        }
+        
+        // Filter functionality
+        function applyFilters() {
+            const facilityValue = facilityFilter.value.toLowerCase();
+            const bloodGroupValue = bloodGroupFilter.value;
+            const componentValue = componentFilter.value.toLowerCase();
+            
+            rows.forEach(row => {
+                const facility = row.cells[0].textContent.toLowerCase();
+                const bloodGroup = row.cells[1].textContent;
+                const component = row.cells[3].textContent.toLowerCase();
+                
+                const facilityMatch = !facilityValue || facility.includes(facilityValue);
+                const bloodGroupMatch = !bloodGroupValue || bloodGroup === bloodGroupValue;
+                const componentMatch = !componentValue || component.includes(componentValue);
+                
+                if (facilityMatch && bloodGroupMatch && componentMatch) {
+                    row.classList.remove('filtered-out');
+                } else {
+                    row.classList.add('filtered-out');
+                }
+            });
+            
+            currentPage = 1;
+            displayRows();
+        }
+        
+        // Event listeners for filters
+        searchBtn.addEventListener('click', applyFilters);
+        
+        resetBtn.addEventListener('click', () => {
+            facilityFilter.value = '';
+            bloodGroupFilter.value = '';
+            componentFilter.value = '';
+            
+            rows.forEach(row => {
+                row.classList.remove('filtered-out');
+            });
+            
+            currentPage = 1;
+            displayRows();
+        });
+        
+        // Initialize the display
+        document.addEventListener('DOMContentLoaded', () => {
+            displayRows();
+        });
+    </script>
+</body>
+</html>

@@ -3,252 +3,669 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Donation Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>RoktoShetu - Blood Donation Hub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #e53935; /* Red */
-            --background: #000000; /* Black */
-            --text-dark: #121212; /* Dark Gray */
+            --primary: #e63946; /* Bright red */
+            --secondary: #f8f9fa; /* Light gray/off-white */
+            --text-dark: #333333; /* Dark gray for text */
             --text-light: #ffffff; /* White */
-            --border: #e53935; /* Red Borders */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --accent: #a4133c; /* Darker red for accents */
         }
 
         body {
-            background-color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-dark);
+            padding-top: 76px; /* Space for fixed navbar */
+            background-color: #fff;
         }
 
         /* Navbar */
         .navbar {
-            background: var(--background);
-            padding: 1rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--border);
+            background-color: #fff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .logo {
+        .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--text-light);
+            color: var(--primary) !important;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: color 0.2s, background-color 0.2s;
             border-radius: 5px;
-            transition: background 0.3s;
+            margin: 0 2px;
         }
 
-        .nav-links a:hover {
-            background: var(--border);
+        .nav-link:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+            color: var(--primary) !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .navbar-toggler {
+            border-color: var(--primary);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28230, 57, 70, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         /* Hero Section */
-        .hero {
-            background: var(--text-light);
-            color: var(--text-dark);
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-        }
-
-        .hero a {
-            background: var(--border);
-            padding: 15px 30px;
-            font-size: 1.2rem;
+        .hero-section {
+            background: linear-gradient(rgba(191, 112, 112, 0.88), rgba(194, 19, 33, 0.896)), url('/api/placeholder/1600/800') center/cover no-repeat;
+            padding: 8rem 0;
             color: var(--text-light);
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease;
+            text-align: center;
         }
 
-        .hero a:hover {
-            background: #b71c1c;
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
         }
 
         /* Feature Cards */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 3rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .feature-card {
-            background: var(--background);
+            background-color: #fff;
             border-radius: 10px;
-            padding: 2rem;
+            padding: 2.5rem 1.5rem;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, border 0.3s ease;
-            border: 2px solid var(--border);
-            color: var(--text-light);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            text-decoration: none;
+            color: var(--text-dark);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--text-light);
+            box-shadow: 0 1rem 2rem rgba(230, 57, 70, 0.15);
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(230, 57, 70, 0.1);
+            color: var(--primary);
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .feature-card:hover .feature-icon {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
         }
 
         .feature-card h3 {
-            color: var(--border);
-            margin: 1.5rem 0;
-            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
-        .feature-card p {
-            opacity: 0.8;
+        /* Content Sections */
+        .content-section {
+            padding: 5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        /* Sections */
-        .section {
-            padding: 5rem 2rem;
-            min-height: 60vh;
-            background-color: var(--text-light);
+        .content-section h2 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .content-section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        /* Stats Counter */
+        .stats-counter {
+            background-color: var(--primary);
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .stats-item {
             text-align: center;
-            border-bottom: 2px solid var(--border);
+        }
+
+        .stats-item .count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-item .label {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         /* Footer */
         footer {
-            background: var(--background);
-            color: var(--text-light);
-            padding: 2rem;
-            text-align: center;
-            border-top: 2px solid var(--border);
+            background-color: #fff;
+            color: var(--text-dark);
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        footer h5 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 0.5rem;
         }
 
         footer a {
-            color: var(--text-light);
+            color: var(--text-dark);
             text-decoration: none;
-            margin: 0 1rem;
-            font-weight: bold;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
         footer a:hover {
-            color: var(--border);
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        html {
-            scroll-behavior: smooth;
+        .social-icons a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(230, 57, 70, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            text-align: center;
+            line-height: 36px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
+        .social-icons a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            color: #777;
+        }
+
+        /* CTA section */
+        .cta-section {
+            background-color: var(--secondary);
+            padding: 5rem 0;
+        }
+
+        .cta-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(230, 57, 70, 0.1);
+        }
+
+        .cta-box h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn-danger, .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-danger:hover, .btn-primary:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn-outline-danger {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-outline-light:hover {
+            color: var(--primary);
+        }
+
+        /* Hero buttons */
+        .hero-btn {
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Light background sections */
+        .bg-light {
+            background-color: var(--secondary) !important;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        /* Logout Button */
+        .logout-btn {
+            color: #dc3545 !important;
+            background-color: transparent;
+            border: 1px solid #dc3545;
+            border-radius: 4px;
+            margin: 0 5px;
+            padding: 6px 15px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+    
+        .logout-btn:hover {
+            color: white !important;
+            background-color: #dc3545;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+        }
+    
+        .logout-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease-out, height 0.3s ease-out;
+        }
+    
+        .logout-btn:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+    
+        .logout-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 4px rgba(220, 53, 69, 0.15);
+        }
+        .profile-pic-nav {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #d90429;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .profile-pic-nav img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
+    {% load static %}
     <!-- Navbar -->
-    <nav class="navbar" style="background-color: #263238;">
-        <div class="logo">RoktoShetu</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="{% url 'emergency_request_list' %}">Emergency</a></li>
-            <li><a href="#availability">Availability</a></li>
-            <li><a href="{% url 'join_as_donor' %}">Donor</a></li>
-            <li><a href="{% url 'donor_list' %}">Donor List</a></li>
-            <li><a href="{% url 'profile' %}">Profile</a></li>
-
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-tint me-2"></i>RoktoShetu
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'emergency_request_list' %}">Emergency</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blood_list' %}">Blood Availability</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'donor_list' %}">Donor List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}" 
+                           style="
+                               background-color: #d32f2f;
+                               color: white !important;
+                               padding: 0.5rem 1.2rem !important;
+                               border-radius: 25px;
+                               transition: all 0.3s ease;
+                               display: inline-flex;
+                               align-items: center;
+                               gap: 0.5rem;
+                               font-weight: 600;
+                               border: 2px solid #d32f2f;
+                               margin-left: 0.5rem;
+                               text-decoration: none !important;
+                           "
+                           onmouseover="this.style.backgroundColor='#b71c1c'; this.style.boxShadow='0 2px 8px rgba(211, 47, 47, 0.3)';" 
+                           onmouseout="this.style.backgroundColor='#d32f2f'; this.style.boxShadow='none';">
+                           <i class="fas fa-sign-out-alt"></i>
+                           Logout
+                        </a>
+                    </li>
+                    <li>
+                        <div class="profile-pic-nav">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+                            {% else %}
+                                <div class="profile-pic-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-
     <!-- Hero Section -->
-    <section id="home" class="hero" style="background-color:white;">
-        <h1>Save Lives Through Blood Donation</h1>
-        <p>Every drop counts. Join our community of life-savers today.</p>
-        <a href="#emergency">View Emergency Requests</a>
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto text-center animated">
+                    <h1>Save Lives Through Blood Donation</h1>
+                    <p class="lead">Every drop counts. Join our community of life-savers and help those in need with your precious gift of blood.</p>
+                    <div>
+                        <a href="{% url 'emergency_request_list' %}" class="btn btn-light btn-lg hero-btn">
+                            <i class="fas fa-bell me-2"></i>Emergency Requests
+                        </a>
+                        <a href="{% url 'join_as_donor' %}" class="btn btn-outline-light btn-lg hero-btn">
+                            <i class="fas fa-user-plus me-2"></i>Join as Donor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Feature Cards -->
-    <div class="features" style="background-color: white;">
-        <a href="#emergency" class="feature-card" style="background-color:black ;">
-            <i class="fas fa-bell" style="font-size: 2.5rem; color: var(--border);"></i>
-            <h3>Emergency Request</h3>
-            <p>Immediate blood requirement alerts</p>
-        </a>
-
-        <a href="#availability" class="feature-card">
-            <i class="fas fa-tint" style="font-size: 2.5rem; color: var(--border);"></i>
-            <h3>Blood Availability</h3>
-            <p>Check real-time blood stock status</p>
-        </a>
-
-        <a href="#camps" class="feature-card">
-            <i class="fas fa-calendar-check" style="font-size: 2.5rem; color: var(--border);"></i>
-            <h3>Donation Camps</h3>
-            <p>Find nearby blood donation events</p>
-        </a>
-
-        <a href="#profile" class="feature-card">
-            <i class="fas fa-user" style="font-size: 2.5rem; color: var(--border);"></i>
-            <h3>Donor Profile</h3>
-            <p>Manage your donor information</p>
-        </a>
-    </div>
-
-    <!-- Content Sections -->
-    <section id="emergency" class="section">
-        <h2>Emergency Blood Request</h2>
-        <p>Details about emergency blood requests will go here.</p>
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold">How You Can Help</h2>
+                    <p class="lead text-muted">Discover the ways you can contribute to saving lives in your community</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'emergency_request_list' %}" class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell fa-2x"></i>
+                        </div>
+                        <h3>Emergency Request</h3>
+                        <p>View and respond to urgent blood donation requests in your area</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="#availability" class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tint fa-2x"></i>
+                        </div>
+                        <h3>Blood Availability</h3>
+                        <p>Check real-time blood inventory levels at local blood banks</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="#camps" class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                        <h3>Donation Camps</h3>
+                        <p>Find upcoming blood donation events and camps near you</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'profile' %}" class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user fa-2x"></i>
+                        </div>
+                        <h3>Donor Profile</h3>
+                        <p>Track your donation history and manage your donor information</p>
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="availability" class="section">
-        <h2>Blood Availability</h2>
-        <p>Details about available blood stocks will go here.</p>
+    <!-- Stats Counter -->
+    <section class="stats-counter">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-6 col-md-3">
+                    <div class="stats-item">
+                        <div class="count">5,000+</div>
+                        <div class="label">Registered Donors</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stats-item">
+                        <div class="count">12,000+</div>
+                        <div class="label">Lives Saved</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stats-item">
+                        <div class="count">64</div>
+                        <div class="label">Districts Covered</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stats-item">
+                        <div class="count">98%</div>
+                        <div class="label">Successful Matches</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="camps" class="section">
-        <h2>Donation Camps</h2>
-        <p>Information about upcoming donation camps will go here.</p>
+    <!-- Emergency Section -->
+    <section id="emergency" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2>Emergency Blood Requests</h2>
+                    <p class="lead">Urgent requests from patients in critical need of blood donation.</p>
+                    <p>Our emergency request system connects patients with matching donors in their area as quickly as possible. When every minute counts, our network of dedicated donors steps up to save lives.</p>
+                    <a href="{% url 'emergency_request_list' %}" class="btn btn-danger mt-3">
+                        <i class="fas fa-heartbeat me-2"></i>View Emergency Requests
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="{% static 'images/download(1).png' %}" class="img-fluid rounded shadow" alt="Emergency requests">
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="profile" class="section">
-        <h2>Donor Profile</h2>
-        <p>Manage your donor information and track your donation history.</p>
+    <!-- Availability Section -->
+    <section id="availability" class="content-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <h2>Blood Availability</h2>
+                    <p class="lead">Check current blood stock levels across blood banks in Bangladesh.</p>
+                    <p>Our real-time inventory tracking system provides up-to-date information on blood availability across the country. This helps hospitals and patients quickly locate the blood type they need and identify potential shortages.</p>
+                    <a href="#" class="btn btn-danger mt-3">
+                        <i class="fas fa-search me-2"></i>Check Availability
+                    </a>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <img src="/api/placeholder/600/400" class="img-fluid rounded shadow" alt="Blood availability">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Camps Section -->
+    <section id="camps" class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2>Donation Camps</h2>
+                    <p class="lead">Find upcoming blood donation events in your area.</p>
+                    <p>Regular blood donation is crucial to maintaining adequate blood supplies. Our platform lists all upcoming donation camps organized by hospitals, blood banks, and community organizations across Bangladesh.</p>
+                    <a href="#" class="btn btn-danger mt-3">
+                        <i class="fas fa-map-marker-alt me-2"></i>Find Nearby Camps
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="/api/placeholder/600/400" class="img-fluid rounded shadow" alt="Donation camps">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="cta-box">
+                        <h3>Become a Blood Donor Today</h3>
+                        <p class="lead mb-4">Your single donation can save up to three lives. Join thousands of donors making a difference across Bangladesh.</p>
+                        <a href="{% url 'join_as_donor' %}" class="btn btn-danger btn-lg px-5">
+                            <i class="fas fa-heart me-2"></i>Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div>
-            <a href="#home">About Us</a>
-            <a href="#home">Contact</a>
-            <a href="#home">Privacy Policy</a>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5>RoktoShetu</h5>
+                    <p>Connecting blood donors with recipients across Bangladesh to save lives through voluntary blood donation.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#emergency">Emergency</a></li>
+                        <li><a href="#availability">Availability</a></li>
+                        <li><a href="#camps">Donation Camps</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Resources</h5>
+                    <ul>
+                        <li><a href="#">About Blood Donation</a></li>
+                        <li><a href="#">Eligibility Criteria</a></li>
+                        <li><a href="#">How Donations Help</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Contact</h5>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt me-2 text-danger"></i>Dhaka, Bangladesh</p>
+                        <p><i class="fas fa-phone me-2 text-danger"></i>(+880) 1700-000000</p>
+                        <p><i class="fas fa-envelope me-2 text-danger"></i>info@roktoshetu.org</p>
+                    </address>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p>© 2024 RoktoShetu. All rights reserved.</p>
+            </div>
         </div>
-        <p>© 2024 Blood Donation Hub. All rights reserved.</p>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

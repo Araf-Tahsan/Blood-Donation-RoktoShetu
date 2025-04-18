@@ -25,6 +25,7 @@ urlpatterns = [
     path('profiles/', include('profiles.urls')),
     path('emergency_requests/', include('emergency_requests.urls')),
     path('donors/', include('donors.urls')),
+    path('blood_availability/', include('blood_availability.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

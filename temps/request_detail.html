@@ -3,19 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Blood Request Details | LifeSaver</title>
+    <title>Emergency Blood Request Details | RoktoShetu</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .navbar-brand {
-            font-weight: bold;
+        :root {
+            --primary: #dc3545;
+            --primary-light: #f8d7da;
+            --text-dark: #343a40;
         }
+        
+        body {
+            padding-top: 76px; /* Added padding to prevent content from being hidden under navbar */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: #fff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary) !important;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: color 0.2s, background-color 0.2s;
+            border-radius: 5px;
+            margin: 0 2px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--primary) !important;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .navbar-toggler {
+            border-color: var(--primary);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28220, 53, 69, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
         .blood-type-badge {
             font-size: 1.2rem;
             padding: 0.5rem 1rem;
         }
+        
         .comment-avatar {
             width: 40px;
             height: 40px;
@@ -24,22 +72,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 10px;
+            margin-right: 15px;
             color: #dc3545;
+            border: 2px solid #dc3545;
         }
+        
         .expired-alert {
             display: none;
         }
+        
         .footer {
-            background-color: #343a40;
+            background-color: #dc3545;
             color: white;
             padding: 2rem 0;
             margin-top: 3rem;
         }
+        
         .social-icons i {
             font-size: 1.5rem;
             margin: 0 10px;
         }
+        
         .image-container {
             max-width: 100%;
             height: auto;
@@ -54,56 +107,184 @@
             border: 1px solid #dee2e6;
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
+        
         .image-container img {
             object-fit: contain;
             max-height: 400px;
             max-width: 100%;
         }
+        
+        .btn-primary {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .btn-primary:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        
+        .btn-outline-primary {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .card-header.bg-light {
+            background-color: #f8d7da !important;
+            color: #721c24;
+        }
+
+        /* Profile and logout buttons */
+        .nav-item .btn-outline-light {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .nav-item .btn-outline-light:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .nav-item .btn-light {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        
+        .nav-item .btn-light:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        
+        /* Professional comment section styling */
+        .comment-section {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .comment-header {
+            background-color: #f8d7da;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(220, 53, 69, 0.2);
+        }
+        
+        .comment-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-item:hover {
+            background-color: #fdfdfd;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .comment-timestamp {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .comment-body {
+            margin-top: 8px;
+            color: #444;
+            line-height: 1.5;
+        }
+        
+        .comment-form {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        .comment-form textarea {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px;
+            resize: vertical;
+            width: 100%;
+            min-height: 100px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        .comment-form textarea:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+            outline: none;
+        }
+        
+        .comment-submit-btn {
+            margin-top: 15px;
+        }
+        
+        .no-comments {
+            padding: 30px;
+            text-align: center;
+            color: #777;
+        }
+        
+        .no-comments i {
+            font-size: 2.5rem;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-heartbeat me-2"></i>RoktoShetu
+                <i class="fas fa-tint me-2"></i>RoktoShetu
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'homepage' %}"><i class="fas fa-home me-1"></i>Home</a>
+                        <a class="nav-link active" href="{% url 'homepage' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="fas fa-ambulance me-1"></i>Emergency Requests</a>
+                        <a class="nav-link" href="{% url 'emergency_request_list' %}">Emergency</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-search me-1"></i>Find Donors</a>
+                        <a class="nav-link" href="#availability">Availability</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-info-circle me-1"></i>About</a>
+                        <a class="nav-link" href="{% url 'join_as_donor' %}">Become Donor</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'donor_list' %}">Donor List</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="d-flex">
+                            <a href="{% url 'profile' %}" class="btn btn-outline-light me-2"><i class="fas fa-user me-1"></i>Profile</a>
+                            <a href="{% url 'logout' %}" class="btn btn-light"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                        </div>
+                    </li>
+                        
                 </ul>
-                <div class="d-flex">
-                    <a href="#" class="btn btn-outline-light me-2"><i class="fas fa-user me-1"></i>Profile</a>
-                    <a href="{% url 'logout' %}" class="btn btn-light"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
-                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container mt-4">
-        <!-- <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Emergency Requests</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Request Details</li>
-            </ol>
-        </nav> -->
-
         <h2 class="mb-4">Emergency Blood Request Details</h2>
         
         <div class="alert alert-danger expired-alert" id="expiredAlert">
@@ -194,53 +375,58 @@
             </div>
         </div>
         
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h4 class="mb-0"><i class="far fa-comments me-2 text-secondary"></i>Comments</h4>
+        <!-- Improved Professional Comments Section -->
+        <div class="card shadow-sm mb-4 comment-section">
+            <div class="card-header comment-header">
+                <h4 class="mb-0"><i class="far fa-comments me-2"></i>Comments</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 {% for comment in comments %}
-                <div class="d-flex mb-3">
-                    <div class="comment-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="border rounded p-3 flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="mb-0 fw-bold">{{ comment.user.username }}</h6>
-                            <small class="text-muted">{{ comment.created_at }}</small>
+                <div class="comment-item">
+                    <div class="d-flex">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user"></i>
                         </div>
-                        <p class="mb-0">{{ comment.text }}</p>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="comment-author mb-0">{{ comment.user.username }}</h6>
+                                <span class="comment-timestamp">{{ comment.created_at }}</span>
+                            </div>
+                            <p class="comment-body mb-0">{{ comment.text }}</p>
+                        </div>
                     </div>
                 </div>
                 {% empty %}
-                <div class="text-center p-4">
-                    <i class="far fa-comment-dots text-secondary mb-2" style="font-size: 2rem;"></i>
-                    <p class="text-muted">No comments yet. Be the first to comment!</p>
+                <div class="no-comments">
+                    <i class="far fa-comment-dots d-block"></i>
+                    <p class="mb-0">No comments yet. Be the first to comment!</p>
                 </div>
                 {% endfor %}
-            </div>
-        </div>
-        
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0"><i class="far fa-edit me-2 text-secondary"></i>Leave a Comment</h5>
-            </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.text.label_tag }}
-                        {{ form.text|safe }}
-                        {% if form.text.errors %}
-                        <div class="text-danger">
-                            {{ form.text.errors }}
+                
+                <!-- Comment Form -->
+                <div class="comment-form">
+                    <h5 class="mb-3"><i class="far fa-edit me-2"></i>Leave a Comment</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <textarea 
+                                name="text" 
+                                id="id_text" 
+                                class="form-control" 
+                                placeholder="Write your comment here..."
+                                required
+                            ></textarea>
+                            {% if form.text.errors %}
+                            <div class="text-danger mt-2">
+                                {{ form.text.errors }}
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane me-1"></i> Post Comment
-                    </button>
-                </form>
+                        <button type="submit" class="btn btn-primary comment-submit-btn">
+                            <i class="fas fa-paper-plane me-1"></i> Post Comment
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -250,7 +436,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4 mb-md-0">
-                    <h5><i class="fas fa-heartbeat me-2"></i>LifeSaver</h5>
+                    <h5><i class="fas fa-tint me-2"></i>RoktoShetu</h5>
                     <p>Connecting blood donors with those in need since 2020. Every donation can save up to three lives.</p>
                     <div class="social-icons">
                         <a href="#" class="text-white"><i class="fab fa-facebook"></i></a>
@@ -282,13 +468,13 @@
                     <ul class="list-unstyled">
                         <li><i class="fas fa-map-marker-alt me-2"></i> 123 Medical Drive, City</li>
                         <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@lifesaver.org</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@roktoshetu.org</li>
                     </ul>
                 </div>
             </div>
             <hr class="mt-4 mb-4 bg-light">
             <div class="text-center">
-                <p class="mb-0">&copy; 2025 LifeSaver Blood Donation Platform. All rights reserved.</p>
+                <p class="mb-0">&copy; 2025 RoktoShetu Blood Donation Platform. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from profiles.models import UserProfile
 
 # User Registration View
 def register(request):
@@ -49,8 +50,12 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+
+
 @login_required
 def homepage(request):
-    return render(request, 'homepage.html')
+    profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'homepage.html', {'profile': profile})
+
 
 

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | BloodBank</title>
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -381,8 +383,7 @@
         <div class="left">
             <div class="left-content">
                 <div class="logo">
-                    <i class="fas fa-heartbeat"></i>
-                    <span>BloodBank</span>
+                    <span><i class="fas fa-tint text-danger"></i>RoktoShetu</span>
                 </div>
                 <h1>Donate Blood, Save Lives</h1>
                 <p class="tagline">Join our community of heroes who are making a difference one donation at a time. Your single donation can save up to three lives.</p>
@@ -438,6 +439,9 @@
                 
                 <div class="signup-link">
                     Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+                </div>
+                <div class="signup-link">
+                    <p style="text-align: center;"><a href="{% url 'password_reset' %}">Forgot password?</a></p>
                 </div>
             </div>
         </div>

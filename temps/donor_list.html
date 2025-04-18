@@ -1,41 +1,373 @@
-<h2>Donor List</h2>
-
-<form method="get">
-    <select name="division">
-        <option value="">Select Division</option>
-        {% for val, label in divisions %}
-            <option value="{{ val }}">{{ label }}</option>
-        {% endfor %}
-    </select>
-
-    <select name="district">
-        <option value="">Select District</option>
-        {% for val, label in districts %}
-            <option value="{{ val }}">{{ label }}</option>
-        {% endfor %}
-    </select>
-
-    <select name="blood_type">
-        <option value="">Blood Group</option>
-        {% for val, label in blood_types %}
-            <option value="{{ val }}">{{ label }}</option>
-        {% endfor %}
-    </select>
-
-    <button type="submit">Search</button>
-</form>
-
-<div style="display:flex; flex-wrap:wrap;">
-    {% for donor in donors %}
-        <div style="text-align:center; margin:10px;">
-            {% if donor.profile_picture %}
-                <img src="{{ donor.profile_picture.url }}" width="80" height="80" style="border-radius: 50%;">
-            {% endif %}
-            <p>{{ donor.first_name }} {{ donor.last_name }}</p>
-            <p>{{ donor.contact_number }}</p>
-            <p>{{ donor.district }}, {{ donor.division }}</p>
-            <p>{{ donor.blood_type }}</p>
-            <p>Available: {{ donor.is_available }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Directory - RoktoShetu</title>
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #dc3545;
+            --primary-dark: #b71c1c;
+            --primary-light: #ef5350;
+            --secondary: #f8f9fa;
+            --secondary-dark: #e9ecef;
+            --text-dark: #212529;
+            --text-medium: #495057;
+            --text-light: #ffffff;
+            --border: #dee2e6;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            padding-top: 70px;
+            background-color: #f2f5f9;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background-color: #fff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary) !important;
+            padding: 0.5rem 0;
+        }
+        
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.2s ease;
+            border-radius: 5px;
+            margin: 0 2px;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--primary) !important;
+        }
+        
+        .navbar-nav .nav-link.active {
+            color: var(--primary) !important;
+            font-weight: 600;
+            background-color: rgba(220, 53, 69, 0.08);
+        }
+        
+        .navbar-toggler {
+            border-color: var(--primary);
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+            outline: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28220, 53, 69, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Existing styles */
+        .donor-table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .blood-type-badge {
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        }
+        
+        .page-heading {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .table-responsive {
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .donor-table thead {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive styles for the navbar */
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                background-color: white;
+                padding: 1rem;
+                border-radius: 8px;
+                box-shadow: var(--shadow-md);
+                margin-top: 0.5rem;
+            }
+            
+            .navbar-nav {
+                width: 100%;
+            }
+            
+            .nav-item {
+                width: 100%;
+            }
+            
+            .nav-link {
+                display: block;
+                width: 100%;
+                padding: 0.75rem 1rem !important;
+                margin: 2px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-tint text-danger"></i>RoktoShetu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'emergency_request_list' %}">Emergency Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blood_list' %}">Blood Availability</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Donors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}" 
+                           style="
+                               background-color: #d32f2f;
+                               color: white !important;
+                               padding: 0.5rem 1.2rem !important;
+                               border-radius: 25px;
+                               transition: all 0.3s ease;
+                               display: inline-flex;
+                               align-items: center;
+                               gap: 0.5rem;
+                               font-weight: 600;
+                               border: 2px solid #d32f2f;
+                               margin-left: 0.5rem;
+                               text-decoration: none !important;
+                           "
+                           onmouseover="this.style.backgroundColor='#b71c1c'; this.style.boxShadow='0 2px 8px rgba(211, 47, 47, 0.3)';" 
+                           onmouseout="this.style.backgroundColor='#d32f2f'; this.style.boxShadow='none';">
+                           <i class="fas fa-sign-out-alt"></i>
+                           Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    {% endfor %}
-</div>
+    </nav>
+
+    <div class="container py-5">
+        <h2 class="page-heading">Blood Donor List</h2>
+        
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="division" class="form-label">Division</label>
+                    <select name="division" id="division" class="form-select">
+                        <option value="">All Divisions</option>
+                        {% for val, label in divisions %}
+                            <option value="{{ val }}" {% if request.GET.division == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="district" class="form-label">District</label>
+                    <select name="district" id="district" class="form-select">
+                        <option value="">All Districts</option>
+                        {% for val, label in districts %}
+                            <option value="{{ val }}" {% if request.GET.district == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="blood_type" class="form-label">Blood Group</label>
+                    <select name="blood_type" id="blood_type" class="form-select">
+                        <option value="">All Blood Groups</option>
+                        {% for val, label in blood_types %}
+                            <option value="{{ val }}" {% if request.GET.blood_type == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="fas fa-search me-2"></i>Search Donors
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Results Count -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="mb-0"><strong>{{ donors.count }}</strong> donors found</p>
+        </div>
+        
+        <!-- Donor Table -->
+        <div class="table-responsive">
+            <table class="table table-hover table-striped donor-table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Blood Group</th>
+                        <th scope="col">Contact</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Last Donation</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donor in donors %}
+                    <tr>
+                        <td>
+                            {% if donor.profile_picture %}
+                                <img src="{{ donor.profile_picture.url }}" alt="{{ donor.first_name }}">
+                            {% else %}
+                                <img src="/api/placeholder/50/50" alt="No photo">
+                            {% endif %}
+                        </td>
+                        <td>{{ donor.first_name }} {{ donor.last_name }}</td>
+                        <td><span class="badge bg-danger">{{ donor.blood_type }}</span></td>
+                        <td>{{ donor.contact_number }}</td>
+                        <td>{{ donor.district }}, {{ donor.division }}</td>
+                        <td>{{ donor.last_donation_date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if donor.is_available %}
+                                <span class="blood-type-badge available">Available</span>
+                            {% else %}
+                                <span class="blood-type-badge unavailable">Unavailable</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4">
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i>No donors match your search criteria
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if donors.has_other_pages %}
+        <nav aria-label="Donor list pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if donors.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ donors.previous_page_number }}{% if request.GET.division %}&division={{ request.GET.division }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}{% if request.GET.blood_type %}&blood_type={{ request.GET.blood_type }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for i in donors.paginator.page_range %}
+                    {% if donors.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if request.GET.division %}&division={{ request.GET.division }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}{% if request.GET.blood_type %}&blood_type={{ request.GET.blood_type }}{% endif %}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if donors.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ donors.next_page_number }}{% if request.GET.division %}&division={{ request.GET.division }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}{% if request.GET.blood_type %}&blood_type={{ request.GET.blood_type }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

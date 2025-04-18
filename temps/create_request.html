@@ -19,8 +19,8 @@
             top: 0;
             left: 0;
             right: 0;
-            background: #d90429;
-            color: white;
+            background: white;
+            color: rgb(0, 0, 0);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -44,7 +44,7 @@
         }
 
         .nav-link {
-            color: white;
+            color: rgb(0, 0, 0);
             text-decoration: none;
             padding: 0.5rem 1rem;
             border-radius: 4px;
@@ -266,13 +266,14 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-brand">
-            <i class="fas fa-heartbeat"></i> RoktoShetu
+            <i class="fas fa-tint text-danger" style="color: red;"></i><span style="color: red;">RoktoShetu</span>
+            
         </div>
         <div class="nav-links">
             <a href="{% url 'homepage' %}" class="nav-link"><i class="fas fa-home"></i> Home</a>
             <a href="{% url 'emergency_request_list' %}" class="nav-link active"><i class="fas fa-ambulance"></i> Requests</a>
-            <a href="#" class="nav-link"><i class="fas fa-search"></i> Find Donors</a>
-            <a href="#" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+            <a href="{%url 'donor_list'}" class="nav-link"><i class="fas fa-search"></i>Donors</a>
+            <a href="{% url 'blood_list' %}" class="nav-link"><i class="fas fa-info-circle"></i>Blood Availability</a>
         </div>
         <div class="nav-links">
             <button class="btn btn-outline-light"><a href="{% url 'profile' %}" class="nav-link"><i class="fas fa-user"></i> Profile</a></button>

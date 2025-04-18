@@ -1,6 +1,330 @@
-<h2>Join as Donor</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Join</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join as Blood Donor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .registration-form {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .page-heading {
+            color: #dc3545;
+            border-bottom: 2px solid #dc3545;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .required-field::after {
+            content: "*";
+            color: #dc3545;
+            margin-left: 4px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+        .donor-benefits {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .benefit-item i {
+            color: #dc3545;
+            font-size: 1.2rem;
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+        .profile-picture-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 10px 0;
+            border: 3px solid #f8f9fa;
+        }
+        .custom-file-upload {
+            cursor: pointer;
+        }
+        .errorlist {
+            color: #dc3545;
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 5px;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 class="page-heading">Join as Blood Donor</h2>
+                
+                <div class="registration-form">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Please fill out this form to register as a blood donor. Fields marked with * are required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label required-field">First Name</label>
+                                {{ form.first_name.errors }}
+                                <input type="text" name="{{ form.first_name.name }}" id="{{ form.first_name.id_for_label }}" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" value="{{ form.first_name.value|default:'' }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label required-field">Last Name</label>
+                                {{ form.last_name.errors }}
+                                <input type="text" name="{{ form.last_name.name }}" id="{{ form.last_name.id_for_label }}" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" value="{{ form.last_name.value|default:'' }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.contact_number.id_for_label }}" class="form-label required-field">Contact Number</label>
+                                {{ form.contact_number.errors }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input type="tel" name="{{ form.contact_number.name }}" id="{{ form.contact_number.id_for_label }}" class="form-control {% if form.contact_number.errors %}is-invalid{% endif %}" value="{{ form.contact_number.value|default:'' }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.blood_type.id_for_label }}" class="form-label required-field">Blood Group</label>
+                                {{ form.blood_type.errors }}
+                                <select name="{{ form.blood_type.name }}" id="{{ form.blood_type.id_for_label }}" class="form-select {% if form.blood_type.errors %}is-invalid{% endif %}" required>
+                                    <option value="">Select Blood Group</option>
+                                    {% for value, text in form.fields.blood_type.choices %}
+                                        <option value="{{ value }}" {% if form.blood_type.value == value %}selected{% endif %}>{{ text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.division.id_for_label }}" class="form-label required-field">Division</label>
+                                {{ form.division.errors }}
+                                <select name="{{ form.division.name }}" id="{{ form.division.id_for_label }}" class="form-select {% if form.division.errors %}is-invalid{% endif %}" required>
+                                    <option value="">Select Division</option>
+                                    {% for value, text in form.fields.division.choices %}
+                                        <option value="{{ value }}" {% if form.division.value == value %}selected{% endif %}>{{ text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.district.id_for_label }}" class="form-label required-field">District</label>
+                                {{ form.district.errors }}
+                                <select name="{{ form.district.name }}" id="{{ form.district.id_for_label }}" class="form-select {% if form.district.errors %}is-invalid{% endif %}" required>
+                                    <option value="">Select District</option>
+                                    {% for value, text in form.fields.district.choices %}
+                                        <option value="{{ value }}" {% if form.district.value == value %}selected{% endif %}>{{ text }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.last_donation_date.id_for_label }}" class="form-label required-field">Last Donation Date</label>
+                                {{ form.last_donation_date.errors }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <input type="date" name="{{ form.last_donation_date.name }}" id="{{ form.last_donation_date.id_for_label }}" class="form-control {% if form.last_donation_date.errors %}is-invalid{% endif %}" value="{{ form.last_donation_date.value|date:'Y-m-d'|default:'' }}" required>
+                                </div>
+                                <small class="form-text text-muted">If you haven't donated before, put today's date</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.profile_picture.id_for_label }}" class="form-label">Profile Picture</label>
+                                {{ form.profile_picture.errors }}
+                                <img src="/api/placeholder/150/150" alt="Profile Preview" class="profile-picture-preview" id="profile-preview">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                    <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.id_for_label }}" class="form-control {% if form.profile_picture.errors %}is-invalid{% endif %}" accept="image/*" onchange="previewImage(this);">
+                                </div>
+                                <small class="form-text text-muted">Upload a clear face photo (optional)</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mt-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                    <label class="form-check-label" for="agreeTerms">
+                                        I agree to be contacted for blood donation when needed and confirm all information provided is accurate.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12 d-grid">
+                                <button type="submit" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-heart me-2"></i>Register as Donor
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="donor-benefits mt-5 mt-lg-0">
+                    <h4 class="mb-4">Benefits of Joining</h4>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <strong>Save Lives</strong>
+                            <p>Your donation can save up to 3 lives each time you donate blood.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-user-shield"></i>
+                        <div>
+                            <strong>Health Screening</strong>
+                            <p>Regular donors receive free mini health check-ups.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <strong>Recognition</strong>
+                            <p>Get recognized for your life-saving contributions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <div>
+                            <strong>Community Impact</strong>
+                            <p>Make a positive impact in your local community.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Did you know?</strong>
+                        <p class="mb-0">You need to wait at least 3 months between blood donations to maintain good health.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-preview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        // Division-District mapping
+        const DIVISION_DISTRICT_MAP = {
+            'Dhaka': [
+                'Dhaka', 'Gazipur', 'Kishoreganj', 'Manikganj', 'Munshiganj',
+                'Narayanganj', 'Narsingdi', 'Rajbari', 'Shariatpur', 'Tangail',
+                'Faridpur', 'Gopalganj', 'Madaripur'
+            ],
+            'Chattogram': [
+                'Chattogram', 'Cox\'s Bazar', 'Comilla', 'Brahmanbaria', 'Chandpur',
+                'Feni', 'Lakshmipur', 'Noakhali', 'Khagrachari', 'Rangamati', 'Bandarban'
+            ],
+            'Rajshahi': [
+                'Rajshahi', 'Pabna', 'Natore', 'Naogaon', 'Joypurhat', 'Chapai Nawabganj',
+                'Bogura', 'Sirajganj'
+            ],
+            'Khulna': [
+                'Khulna', 'Bagerhat', 'Chuadanga', 'Jashore', 'Jhenaidah', 'Kushtia',
+                'Magura', 'Meherpur', 'Narail', 'Satkhira'
+            ],
+            'Barisal': [
+                'Barisal', 'Barguna', 'Bhola', 'Jhalokathi', 'Patuakhali', 'Pirojpur'
+            ],
+            'Sylhet': [
+                'Sylhet', 'Habiganj', 'Moulvibazar', 'Sunamganj'
+            ],
+            'Mymensingh': [
+                'Mymensingh', 'Netrokona', 'Sherpur', 'Jamalpur'
+            ],
+            'Rangpur': [
+                'Rangpur', 'Dinajpur', 'Gaibandha', 'Kurigram', 'Lalmonirhat',
+                'Nilphamari', 'Panchagarh', 'Thakurgaon'
+            ]
+        };
+        
+        // Add district filtering based on division selection
+        document.addEventListener('DOMContentLoaded', function() {
+            const divisionSelect = document.getElementById('{{ form.division.id_for_label }}');
+            const districtSelect = document.getElementById('{{ form.district.id_for_label }}');
+            
+            if (divisionSelect && districtSelect) {
+                // Store the selected district if there is one
+                const selectedDistrict = districtSelect.value;
+                
+                divisionSelect.addEventListener('change', function() {
+                    const selectedDivision = this.value;
+                    
+                    // Clear current districts
+                    districtSelect.innerHTML = '<option value="">Select District</option>';
+                    
+                    // If a division is selected, populate with relevant districts
+                    if (selectedDivision && DIVISION_DISTRICT_MAP[selectedDivision]) {
+                        const districts = DIVISION_DISTRICT_MAP[selectedDivision];
+                        
+                        districts.forEach(district => {
+                            const option = document.createElement('option');
+                            option.value = district;
+                            option.textContent = district;
+                            districtSelect.appendChild(option);
+                        });
+                    }
+                });
+                
+                // Trigger the change event on page load if a division is already selected
+                if (divisionSelect.value) {
+                    divisionSelect.dispatchEvent(new Event('change'));
+                    
+                    // If there was a previously selected district, try to select it again
+                    if (selectedDistrict) {
+                        for (let i = 0; i < districtSelect.options.length; i++) {
+                            if (districtSelect.options[i].value === selectedDistrict) {
+                                districtSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
